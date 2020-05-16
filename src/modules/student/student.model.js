@@ -18,7 +18,13 @@ const StudentSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  grades: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Grade'
+    }
+  ],
 })
 
 /**
@@ -43,6 +49,7 @@ StudentSchema.statics = {
    */
   get(id) {
     return this.findById(id)
+      .populate('grades')
       .exec()
       .then(student => {
         if (student) {
@@ -62,7 +69,7 @@ StudentSchema.statics = {
    * @returns {Promise<Student[]>}
    */
   list() {
-    return this.find().exec()
+    return this.find().populate('grades').exec()
   },
 
   /**

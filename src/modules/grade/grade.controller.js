@@ -1,5 +1,6 @@
 const httpStatus = require('http-status')
 const Grade = require('./grade.model')
+const Student = require('../student/student.model')
 const APIError = require('../../helpers/APIError')
 
 /**
@@ -35,7 +36,15 @@ function create(req, res, next) {
 
   grade
     .save()
-    .then(savedGrade => res.json(savedGrade))
+    .then(savedGrade => {
+      Student.findById(savedGrade.student).then(student => {
+        student.grades.push(savedGrade._id)
+
+        student.save()
+          .then(() => res.json(savedGrade))
+          .catch(e => next(e))
+      })
+    })
     .catch(e => next(e))
 }
 
@@ -54,7 +63,9 @@ function update(req, res, next) {
 
   grade
     .save()
-    .then(savedGrade => res.json(savedGrade))
+    .then(editedGrade => {
+      res.json(editedGrade)
+    })
     .catch(e => next(new APIError(e.message, httpStatus.CONFLICT, true)))
 }
 

@@ -16,8 +16,8 @@ const paramValidation = {
       subjectId: Joi.string().required(),
     },
     body: {
-        name: Joi.string().required(),
-        date: Joi.string().required(),
+      name: Joi.string().required(),
+      date: Joi.string().required(),
     },
   },
 };
@@ -40,6 +40,8 @@ router.route('/:subjectId')
   .delete(subjectCtrl.remove);
 
 router.put('/:subjectId/attachStudent', subjectCtrl.attachStudent)
+
+router.put('/:subjectId/deattachStudent/:student', subjectCtrl.deattachStudent)
 
 /** Load subject when API with subjectId route parameter is hit */
 router.param('subjectId', subjectCtrl.load);

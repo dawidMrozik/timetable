@@ -53,7 +53,6 @@ PresenceSchema.statics = {
    */
   get(id) {
     return this.findById(id)
-      .populate('student')
       .exec()
       .then(presence => {
         if (presence) {
@@ -74,7 +73,6 @@ PresenceSchema.statics = {
    */
   list() {
     return this.find()
-      .populate('student')
       .exec()
   },
 
@@ -89,7 +87,6 @@ PresenceSchema.statics = {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
-      .populate('student')
       .exec()
   }
 }

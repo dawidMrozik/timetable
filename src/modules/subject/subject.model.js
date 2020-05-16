@@ -15,10 +15,12 @@ const SubjectSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  students: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Student'
-  }],
+  students: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Student'
+    }
+  ],
   teacher: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
@@ -51,7 +53,10 @@ SubjectSchema.statics = {
    */
   get(id) {
     return this.findById(id)
-      .populate('students')
+      .populate({
+        path: 'students',
+        populate: { path: 'grades' }
+      })
       .exec()
       .then(subject => {
         if (subject) {

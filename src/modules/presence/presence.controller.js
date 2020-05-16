@@ -77,11 +77,22 @@ function remove(req, res, next) {
     .catch(e => next(e))
 }
 
+function presence(req, res, next) {
+  Presence
+    .find()
+    .where('subject', req.params.subject)
+    .where('date', req.params.date)
+    .exec()
+    .then(presence => res.json(presence))
+    .catch(e => next(e))
+}
+
 module.exports = {
   load,
   get,
   create,
   update,
   list,
-  remove
+  remove,
+  presence
 }
